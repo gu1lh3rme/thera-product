@@ -16,6 +16,7 @@ export class OrdersService {
 
     const orderItems: { productId: number; quantity: number; price: number }[] = [];
     let totalPrice = 0;
+    const productCache = new Map<number, Awaited<ReturnType<ProductsRepository['findById']>>>();
 
     for (const item of items) {
       const product = await this.productsRepository.findById(item.productId);
@@ -30,6 +31,7 @@ export class OrdersService {
       const price = Number(product.price);
       orderItems.push({ productId: item.productId, quantity: item.quantity, price });
       totalPrice += price * item.quantity;
+      productCache.set(item.productId, product);
     }
 
     const order = await this.ordersRepository.create({
@@ -40,7 +42,7 @@ export class OrdersService {
 
     if (status === 'Concluido') {
       for (const item of items) {
-        const product = await this.productsRepository.findById(item.productId);
+        const product = productCache.get(item.productId);
         if (product) {
           await this.productsRepository.updateStock(item.productId, product.stockQuantity - item.quantity);
         }
