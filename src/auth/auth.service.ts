@@ -4,6 +4,8 @@ import { LoginDto } from './dto/login.dto';
 
 @Injectable()
 export class AuthService {
+  // NOTE: Hardcoded credentials for demo purposes only.
+  // In production, replace with a proper user repository and password hashing (e.g., bcrypt).
   private readonly users = [
     { id: 1, username: 'admin', password: 'admin123' },
   ];
