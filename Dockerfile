@@ -6,6 +6,7 @@ COPY package*.json ./
 RUN npm ci
 
 COPY . .
+COPY prisma ./prisma
 
 RUN npx prisma generate
 RUN npm run build
@@ -21,6 +22,6 @@ COPY --from=builder /app/dist ./dist
 COPY --from=builder /app/node_modules/.prisma ./node_modules/.prisma
 COPY prisma ./prisma
 
-EXPOSE 3000
+EXPOSE 4000
 
 CMD ["node", "dist/main"]

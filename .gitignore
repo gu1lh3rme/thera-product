@@ -4,4 +4,10 @@ dist
 # Keep environment variables out of version control
 .env
 
+# Test coverage
+coverage/
+*.lcov
+.nyc_output
+coverage.json
+
 /generated/prisma
